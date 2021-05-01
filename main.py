@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 #ENVIRONMENTAL VARIABLES
 load_dotenv()
 SECRET_KEY = os.environ.get("SECRET_KEY")
-DATABASE_URL = os.environ.get("DATABASE_URL")
 PASSWORD_HASH_METHOD = os.environ.get("PASSWORD_METHOD")
 SALT_LENGTH = os.environ.get("SALT_LENGTH")
 
@@ -43,7 +42,7 @@ def inject_today_date():
     return {'current_year': current_year}
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("HEROKU_POSTGRESQL_GOLD_URL","sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
