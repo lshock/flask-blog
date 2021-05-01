@@ -13,16 +13,11 @@ import datetime
 import os
 from dotenv import load_dotenv
 
-#ENVIRONMENTAL VARIABLES
 load_dotenv()
-SECRET_KEY = os.environ.get("SECRET_KEY")
-PASSWORD_HASH_METHOD = os.environ.get("PASSWORD_METHOD")
-SALT_LENGTH = os.environ.get("SALT_LENGTH")
-
 
 #FLASK APP INITIALIZATION
 app = Flask(__name__)
-app.config['SECRET_KEY']=SECRET_KEY
+app.config['SECRET_KEY']=os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
@@ -124,8 +119,8 @@ def register():
         else:
             encrypted_pass = generate_password_hash(
                 password=form.password.data,
-                method=PASSWORD_HASH_METHOD,
-                salt_length=SALT_LENGTH
+                method='pbkdf2:sha256',
+                salt_length=8
             )
             new_user = User(
                 email=form.email.data,
